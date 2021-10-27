@@ -24,9 +24,14 @@ class Gerente:
 
     def Lista():
         clear()
-        for x in range(len(lista)):
+        for x in range(len(lista)): #para cada item na lista
             print(str(x)+" "+"Item: "+lista[x].qtd+" "+lista[x].nome)
-            print()
+            if int(lista[x].aprovGen) == 2:
+                print("Aguardando verificação")
+            elif int(lista[x].aprovGen) == 1:
+                print("Aprovado")
+            else:
+                print("Negado")
             print("")
 
         y = input("Modificar item nº:")
@@ -38,5 +43,3 @@ class Gerente:
         
         x = input("")
         Gerente.Main()
-
-Gerente.Main()
