@@ -39,20 +39,7 @@ class Operario:
                 print("Pedido Negado[gerencia]")
             elif obj.aprovGen == 2:
                 print("Pedido em Exame")
-            elif obj.com == 0:
-                print("Pedido Negado[compras]")
-            elif obj.com == 2:
-                print("[Aprovado gerencia]")
-                print("Pedido em Exame[compras]")
-            elif obj.log == 0:
-                print("Erro no produto[logistica]")
-            elif obj.log == 2:
-                print("[aprovado compras]")
-                print("Espera do produto[logistica]")
-            elif obj.entrega == 0:
-                print("Esperando retirar produto requisitado!")
-            elif obj.entrega == 1:
-                print("Produto Entregue")
+            
             print("")
         x = input("")
         Operario.Main()
