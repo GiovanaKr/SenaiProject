@@ -4,6 +4,8 @@ import os
 clear = lambda: os.system('cls')
 lista = ObjetoPedido.listaP
 
+#mostrar pedido para retirar
+
 class Operario:
     def Main():
         clear()
