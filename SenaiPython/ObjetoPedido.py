@@ -6,6 +6,6 @@ class Pedido:   #OBJETO
         self.nome = name   #nome item
         self.qtd = qtd     #quantidade
         self.aprovGen = 2  #gerente
-        self.arovCom = 2   #compras
+        self.aprovCom = 2   #compras
         self.log = 2       #logistica
         self.entrega = 0   #entregue
