@@ -3,6 +3,7 @@ listaP = [] #lista global
  
 class Pedido:   #OBJETO
     def __init__(self, name, qtd):
+        #self.user = user
         self.nome = name   #nome item
         self.qtd = qtd     #quantidade
         self.aprovGen = 2  #gerente
