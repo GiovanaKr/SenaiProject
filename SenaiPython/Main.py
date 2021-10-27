@@ -1,5 +1,6 @@
 #Main
 from Operario import Operario  
+from Gerente import Gerente
 import os
 clear = lambda: os.system('cls')
  
@@ -17,8 +18,7 @@ class Menu:
         if int(r) == 1:
             Operario.Main()
         elif int(r) == 2:
-            pass
-            #script gerente
+            Gerente.Main()
         elif int(r) == 3:
             pass
             #script compras
@@ -29,5 +29,6 @@ class Menu:
             return
         else:
             Menu.inicio()
+        Menu.inicio()
       
 Menu.inicio()
