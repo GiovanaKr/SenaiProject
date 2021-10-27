@@ -35,10 +35,12 @@ class Operario:
         for obj in lista:
             print("Item: "+obj.qtd+" "+obj.nome)
             
-            if obj.aprovGen == 0:
-                print("Pedido Negado[gerencia]")
-            elif obj.aprovGen == 2:
-                print("Pedido em Exame")
+            if int(obj.aprovGen) == 0:
+                print("Negado[gerencia]")
+            elif int(obj.aprovGen) == 2:
+                print("Sendo examinado")
+            elif int(obj.aprovGen) == 1:
+                print("Aprovado[gerencia]")
             
             print("")
         x = input("")
