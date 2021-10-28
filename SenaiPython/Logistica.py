@@ -3,6 +3,8 @@ import os
 clear = lambda: os.system('cls')
 lista = ObjetoPedido.listaP
 
+#mostrar opç entrega ou espera só depois que foi recebido
+
 pp = ObjetoPedido.Pedido("papel","100")
 lista.append(pp)
 gg = ObjetoPedido.Pedido("caneta","5")
