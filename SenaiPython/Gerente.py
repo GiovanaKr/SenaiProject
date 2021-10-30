@@ -3,10 +3,9 @@ import os
 clear = lambda: os.system('cls')
 lista = ObjetoPedido.listaP
 
-pp = ObjetoPedido.Pedido("papel","100")
-lista.append(pp)
-gg = ObjetoPedido.Pedido("caneta","5")
-lista.append(gg)
+#sair da def lista()
+#input incorreto simples
+#loop lista
 
 class Gerente:
     def Main():
@@ -24,6 +23,8 @@ class Gerente:
 
     def Lista():
         clear()
+        h = 0
+        print("presione 's' para sair")
         for x in range(len(lista)): #para cada item na lista
             print(str(x)+" "+"Item: "+lista[x].qtd+" "+lista[x].nome)
             if int(lista[x].aprovGen) == 2:
@@ -33,13 +34,25 @@ class Gerente:
             else:
                 print("Negado")
             print("")
+            h = h+1
 
-        y = input("Modificar item nº:")
-        for x in range(len(lista)):
-            if x == int(y):
-                print(lista[x].qtd + " " +lista[x].nome)
-                r = input("Aprovar(1)   Reprovar(0)")
-                lista[x].aprovGen = r
-        
-        x = input("")
-        Gerente.Main()
+        if h == 0 :
+            print("Aguardando requisições") 
+        else:
+            y = input("Modificar item nº:")
+            if y == 's':
+                Gerente.Main()
+            for x in range(len(lista)):
+                if x == int(y):
+                    print(lista[x].qtd + " " +lista[x].nome)
+                    r = input("Aprovar(1)   Reprovar(0)")
+                    if r == 's':
+                        Gerente.Main()                       
+                    if int(r) == 0 or int(r) == 1:
+                        lista[x].aprovGen = r 
+                    else:
+                        print("input incorreto")
+                        x = input("")
+                        Gerente.Lista()
+        Gerente.Lista()
+Gerente.Main()
