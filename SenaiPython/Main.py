@@ -1,6 +1,8 @@
 #Main
 from Operario import Operario  
 from Gerente import Gerente
+from Compras import Compras
+from Logistica import Logistica
 import os
 clear = lambda: os.system('cls')
  
@@ -20,11 +22,9 @@ class Menu:
         elif int(r) == 2:
             Gerente.Main()
         elif int(r) == 3:
-            pass
-            #script compras
+            Compras.Main()
         elif int(r) == 4:
-            pass
-            #script logistica
+            Logistica.Main()
         elif int(r) == 9:
             return
         else:
