@@ -3,12 +3,9 @@ import os
 clear = lambda: os.system('cls')
 lista = ObjetoPedido.listaP
 
-pp = ObjetoPedido.Pedido("papel","100")
-pp.aprovGen =1
-lista.append(pp)
-gg = ObjetoPedido.Pedido("caneta","5")
-gg.aprovGen = 1
-lista.append(gg)
+#sair da def lista()
+#input incorreto simples
+#loop lista
 
 class Compras:
     def Main():
@@ -27,6 +24,8 @@ class Compras:
     def Lista():
         clear()
         h = 0
+        print("pressione 's' para sair")
+        print("")
         for x in range(len(lista)): #para cada item na lista
             if int(lista[x].aprovGen) == 1 :
                 print(str(x)+" "+"Item: "+lista[x].qtd+" "+lista[x].nome)
@@ -43,14 +42,28 @@ class Compras:
             print("Aguardando requisições") 
         else:
             y = input("Modificar item nº:")
+            if y == 's':
+                Compras.Main()
             for x in range(len(lista)):
                 if int(lista[x].aprovGen) == 1 :
                     if x == int(y):
                         print(lista[x].qtd + " " +lista[x].nome)
                         r = input("Aprovar(1)   Reprovar(0)")
-                        lista[x].aprovCom = r       
-                    
-
-        x = input("")
-        Compras.Main()
+                        if r == 's':
+                            Compras.Main()                       
+                        if int(r) == 0 or int(r) == 1:
+                            lista[x].aprovCom = r 
+                        else:
+                            print("input incorreto")
+                            x = input("")
+                            Compras.Lista()                    
+        Compras.Lista()
 Compras.Main()
+
+#try:
+#    x = int(r)
+#except ValueError: #se input não for 's' nem int
+#    print("input incorreto")
+#    x = input("")
+
+Compras.Lista()
