@@ -3,22 +3,24 @@ import os
 clear = lambda: os.system('cls')
 lista = ObjetoPedido.listaP
 
-#mostrar opç entrega ou espera só depois que foi recebido
+#sair da def lista()
+#input incorreto simples
+#loop lista
 
-pp = ObjetoPedido.Pedido("papel","100")
-lista.append(pp)
-gg = ObjetoPedido.Pedido("caneta","5")
-lista.append(gg)
+#fazer retirada de produto
 
 class Logistica:
     def Main():
         clear()
         print("#######PERFIL GERENCIAL#######")
         print("1-Verificar/Modificar solicitações")
+        print("2-Retirada de produto")
         print("5-Logout")
         r = input(": ")
         if int(r) == 1:
             Logistica.Lista()
+        elif int(r) == 2:
+            ##criar funcao
         elif int(r) == 5:
             return
         else:
@@ -26,28 +28,41 @@ class Logistica:
 
     def Lista():
         clear()
+        h = 0
+        print("pressione 's' para sair")
+        print("")
         for x in range(len(lista)): #para cada item na lista
-             if int(lista[x].aprovCom) == 1 :
+            if int(lista[x].aprovCom) == 1 :
                 print(str(x)+" "+"Item: "+lista[x].qtd+" "+lista[x].nome)
                 if int(lista[x].log) == 2:
                     print("Aguardando verificação")
                 elif int(lista[x].log) == 1:
-                    print("Recebido")
+                    print("Aprovado")
                 else:
-                    print("Recusado")
+                    print("Negado")
+                print("")
+                h=h+1
 
-        h=0
-        for x in range(len(lista)):
-            if int(lista[x].aprovCom) == 1 :
-                y = input("Modificar item nº:")
-                if x == int(y):
-                    print(lista[x].qtd + " " +lista[x].nome)
-                    r = input("Recebido(1)   Recusado(0)")
-                    lista[x].log = r
-                    s = input("Foi entregue(1)  Em espera(0) ")
-                    lista[x].entrega = s
-                    h=h+1
-        if h==0: 
-            print("Aguardando Requisições")           
+        if h == 0 :
+            print("Aguardando requisições")
+        else:
+            y = input("Modificar item nº:")
+            if y == 's':
+                Logistica.Main()
+            for x in range(len(lista)):
+                if int(lista[x].aprovCom) == 1 :
+                    if x == int(y):
+                        print(lista[x].qtd + " " +lista[x].nome)
+                        r = input("Aprovar(1)   Reprovar(0)")
+
+                        if r == 's':
+                            Logistica.Main()
+                        if int(r) == 0 or int(r) == 1:
+                            lista[x].log = r 
+                        else:
+                            print("input incorreto")
+                            x = input("")
+                            Logistica.Lista()
         x = input("")
-        Logistica.Main()
+        Logistica.Lista()
+Logistica.Main()
