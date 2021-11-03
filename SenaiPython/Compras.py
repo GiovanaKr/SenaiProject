@@ -68,11 +68,3 @@ class Compras:
                             Compras.Lista()                    
         Compras.Lista()
 Compras.Main()
-
-#try:
-#    x = int(r)
-#except ValueError: #se input não for 's' nem int
-#    print("input incorreto")
-#    x = input("")
-
-Compras.Lista()
