@@ -40,18 +40,14 @@ class Operario:
         print("pressione 's' para sair")
         print("")
         nome = input("Item:") 
+        
         if nome == "s":     #sair
             Operario.Main()
+            
         qtd = input("Quantidade:")
-        try:        #testa input incorreto
-            x = int(qtd)
-            pp = ObjetoPedido.Pedido(nome,qtd)  #cria objeto se input correto
-            lista.append(pp)
-            Operario.Main()
-        except:
-            print("input incorreto")
-            x = input("")
-            Operario.CriarPedido()
+        pp = ObjetoPedido.Pedido(nome,qtd)  #cria objeto se input correto
+        lista.append(pp)
+        Operario.Main()
 
     def VerLista(): #lista pedidos
         clear()
