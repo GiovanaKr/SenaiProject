@@ -7,6 +7,13 @@ lista = ObjetoPedido.listaP
 #input incorreto simples
 #loop lista
 
+gg = ObjetoPedido.Pedido('papel','100')
+gg.aprovGen = '1'
+lista.append(gg)
+pp = ObjetoPedido.Pedido('caneta','10')
+pp.aprovGen = '1'
+lista.append(pp)
+
 class Compras:
     def Main():
         clear()
@@ -50,7 +57,9 @@ class Compras:
                         print(lista[x].qtd + " " +lista[x].nome)
                         r = input("Aprovar(1)   Reprovar(0)")
                         if r == 's':
-                            Compras.Main()                       
+                            Compras.Main() 
+                        if  int(r) == 0:
+                            lista[x].justificava=input('Motivo:')                      
                         if int(r) == 0 or int(r) == 1:
                             lista[x].aprovCom = r 
                         else:
