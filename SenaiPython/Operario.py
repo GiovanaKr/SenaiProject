@@ -83,4 +83,3 @@ class Operario:
             print("")
         x = input("")
         Operario.Main()
-Operario.Main()        
