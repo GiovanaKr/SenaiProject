@@ -9,6 +9,13 @@ lista = ObjetoPedido.listaP
 
 #fazer retirada de produto
 
+gg = ObjetoPedido.Pedido('papel','100')
+gg.aprovCom = '1'
+lista.append(gg)
+pp = ObjetoPedido.Pedido('caneta','10')
+pp.aprovCom = '1'
+lista.append(pp)
+
 class Logistica:
     def Main():
         clear()
@@ -20,7 +27,7 @@ class Logistica:
         if int(r) == 1:
             Logistica.Lista()
         elif int(r) == 2:
-            ##criar funcao
+            Logistica.Retirada()
         elif int(r) == 5:
             return
         else:
@@ -53,7 +60,9 @@ class Logistica:
                 if int(lista[x].aprovCom) == 1 :
                     if x == int(y):
                         print(lista[x].qtd + " " +lista[x].nome)
-                        r = input("Aprovar(1)   Reprovar(0)")
+                        r = input("Recebido(1)   Recusado(0)")
+                        if  int(r) == 0:
+                            lista[x].justificava=input('Motivo:')
 
                         if r == 's':
                             Logistica.Main()
@@ -63,6 +72,39 @@ class Logistica:
                             print("input incorreto")
                             x = input("")
                             Logistica.Lista()
+
+                        if int(lista[x].log) == 1:
+                            s = input("Foi entregue(1)  Em espera(0) ")
+                            lista[x].entrega = s
+
         x = input("")
         Logistica.Lista()
+
+    def Retirada():
+        clear()
+        print("pressione 's' para sair")
+        print("")
+        h=0
+        for x in range(len(lista)):
+            if (int(lista[x].log)==1):
+                if (int(lista[x].entrega)==0):
+                    print(str(x)+" "+"Item: "+lista[x].qtd+" "+lista[x].nome)
+                    h=h+1
+
+        
+
+        if h==0: 
+            print("Aguardando Requisições")            
+        else:
+            y = input("Modificar item nº:")
+            if y == 's':
+                Logistica.Main()
+        
+            for x in range(len(lista)):
+                    if x == int(y):
+                        r = input("Sim(1)   Não(0)")
+                        lista[x].entrega = r
+        x = input("")
+        Logistica.Main()
+
 Logistica.Main()
