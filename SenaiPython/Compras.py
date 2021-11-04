@@ -3,16 +3,8 @@ import os
 clear = lambda: os.system('cls')
 lista = ObjetoPedido.listaP
 
-#sair da def lista()
-#input incorreto simples
-#loop lista
-
-gg = ObjetoPedido.Pedido('papel','100')
-gg.aprovGen = '1'
-lista.append(gg)
-pp = ObjetoPedido.Pedido('caneta','10')
-pp.aprovGen = '1'
-lista.append(pp)
+#gg = ObjetoPedido.Pedido('papel','100')
+#lista.append(gg)
 
 class Compras:
     def Main():
@@ -23,6 +15,7 @@ class Compras:
         r = input(": ")
         if int(r) == 1:
             Compras.Lista()
+            Compras.Main()
         elif int(r) == 5:
             return
         else:
@@ -31,7 +24,7 @@ class Compras:
     def Lista():
         clear()
         h = 0
-        print("pressione 's' para sair")
+        print("pressione '0' para sair")
         print("")
         for x in range(len(lista)): #para cada item na lista
             if int(lista[x].aprovGen) == 1 :
@@ -47,13 +40,16 @@ class Compras:
 
         if h == 0 :
             print("Aguardando requisições") 
+            f = input('')
+            return
         else:
             y = input("Modificar item nº:")
-            if y == 's':
-                Compras.Main()
+            d = int(y)-1 #numero certo
+            if int(y) == 0:
+                return
             for x in range(len(lista)):
                 if int(lista[x].aprovGen) == 1 :
-                    if x == int(y):
+                    if x == d:
                         print(lista[x].qtd + " " +lista[x].nome)
                         r = input("Aprovar(1)   Reprovar(0)")
                         if r == 's':
@@ -67,4 +63,3 @@ class Compras:
                             x = input("")
                             Compras.Lista()                    
         Compras.Lista()
-Compras.Main()
