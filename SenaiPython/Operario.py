@@ -4,9 +4,9 @@ import os
 clear = lambda: os.system('cls')
 lista = ObjetoPedido.listaP
 
-#saida de pedidos()
-#retirada de produtos
-#teste input
+#pp = ObjetoPedido.Pedido('caneta','10')
+#lista.append(pp)
+
 
 class Operario:
     def Main():
@@ -20,6 +20,7 @@ class Operario:
         r = int(input(": "))
         if r == 1:
             Operario.CriarPedido()
+            Operario.Main()
         elif r == 2:
             Operario.VerLista()
         elif r == 5:
@@ -27,7 +28,7 @@ class Operario:
         else:
             Operario.Main()
  
-    def Retirar(): #retirar pedidos
+    def Retirar(): #mostra se tem pedidos para serem retirados
         h = 0
         for obj in lista:
             if int(obj.log) == 1:
@@ -40,14 +41,12 @@ class Operario:
         print("pressione 's' para sair")
         print("")
         nome = input("Item:") 
-        
         if nome == "s":     #sair
-            Operario.Main()
-            
+            return
         qtd = input("Quantidade:")
-        pp = ObjetoPedido.Pedido(nome,qtd)  #cria objeto se input correto
-        lista.append(pp)
-        Operario.Main()
+        pdd = ObjetoPedido.Pedido(nome,qtd)
+        lista.append(pdd)
+        return
 
     def VerLista(): #lista pedidos
         clear()
@@ -56,26 +55,29 @@ class Operario:
             
             if int(obj.aprovGen) == 0:
                 print("[gerencia]Negado")
+                print('Motivo: '+obj.justificativa)
             elif int(obj.aprovGen) == 2:
                 print("[gerencia]Sendo examinado")
             elif int(obj.aprovGen) == 1:
                 print("[gerencia]Aprovado")
 
-            if int(obj.aprovCom) == 0:
-                print("[Compras]Negado")
-            elif int(obj.aprovCom) == 2:
-                print("[Compras]Sendo examinado")
-            elif int(obj.aprovCom) == 1:
-                print("[Compras]Aprovado")
+                if int(obj.aprovCom) == 0:
+                    print("[Compras]Negado")
+                    print('Motivo: '+obj.justificativa)
+                elif int(obj.aprovCom) == 2:
+                    print("[Compras]Sendo examinado")
+                elif int(obj.aprovCom) == 1:
+                    print("[Compras]Aprovado")
 
-            if int(obj.log) == 0:
-                print("[Logistica]Negado")
-            elif int(obj.log) == 2:
-                print("[Logistica]Sendo examinado")
-            elif int(obj.log) == 1:
-                print("[Logistica]Aprovado")
-                if int(obj.entrega) == 0:
-                    print("[Logistica]!Retirar!")
+                    if int(obj.log) == 0:
+                        print("[Logistica]Negado")
+                        print('Motivo: '+obj.justificativa)
+                    elif int(obj.log) == 2:
+                        print("[Logistica]Sendo examinado")
+                    elif int(obj.log) == 1:
+                        print("[Logistica]Aprovado")
+                        if int(obj.entrega) == 0:
+                            print("[Logistica]!Retirar!")
             print("")
         x = input("")
-        Operario.Main()
+        Operario.Main()     
