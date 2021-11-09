@@ -3,10 +3,13 @@ import ObjetoPedido
 import os
 clear = lambda: os.system('cls')
 lista = ObjetoPedido.listaP
+estoque = ObjetoPedido.listaE
 
 #pp = ObjetoPedido.Pedido('caneta','10')
 #lista.append(pp)
 
+#ver estoque
+#comparar pedido com o que tem no estoque
 
 class Operario:
     def Main():
@@ -16,6 +19,7 @@ class Operario:
         print("")
         print("1-Solicitar produto")
         print("2-Verificar solicitações")
+        print("3-Ver estoque")
         print("5-Logout")
         r = int(input(": "))
         if r == 1:
@@ -23,6 +27,10 @@ class Operario:
             Operario.Main()
         elif r == 2:
             Operario.VerLista()
+            Operario.Main()
+        elif r == 3:
+            Operario.VerEstoque()
+            Operario.Main()
         elif r == 5:
             return
         else:
@@ -38,13 +46,14 @@ class Operario:
 
     def CriarPedido(): #cria pedido novo
         clear()
-        print("pressione 's' para sair")
+        print("pressione '0' para sair")
         print("")
         nome = input("Item:") 
-        if nome == "s":     #sair
+        if nome == '0':     #sair
             return
         qtd = input("Quantidade:")
         pdd = ObjetoPedido.Pedido(nome,qtd)
+        pdd.numero = (len(lista)+1)
         lista.append(pdd)
         return
 
@@ -53,13 +62,16 @@ class Operario:
         for obj in lista:
             print("Item: "+obj.qtd+" "+obj.nome)
             
-            if int(obj.aprovGen) == 0:
+            if obj.aprovGen == '0':
                 print("[gerencia]Negado")
                 print('Motivo: '+obj.justificativa)
-            elif int(obj.aprovGen) == 2:
+            elif obj.aprovGen == '2':
                 print("[gerencia]Sendo examinado")
-            elif int(obj.aprovGen) == 1:
+            elif obj.aprovGen == '1':
+                if obj.modifica != '0': #mostra modificação
+                    print(obj.modifica)
                 print("[gerencia]Aprovado")
+
 
                 if int(obj.aprovCom) == 0:
                     print("[Compras]Negado")
@@ -80,4 +92,18 @@ class Operario:
                             print("[Logistica]!Retirar!")
             print("")
         x = input("")
-        Operario.Main()     
+        return
+
+    def VerEstoque(): #mostra items do estoque
+        clear()
+        h = 0
+        for obj in estoque:
+            print(obj.qtd+" "+obj.nome)
+            h=h+1
+
+        if h == 0:
+            print('estoque vazio')
+            x = input("")
+            return
+        x = input("")
+        return
