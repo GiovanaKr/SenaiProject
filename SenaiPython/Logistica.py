@@ -2,9 +2,15 @@ import ObjetoPedido
 import os
 clear = lambda: os.system('cls')
 lista = ObjetoPedido.listaP
+estoque = ObjetoPedido.listaE
 
 #gg = ObjetoPedido.Pedido('papel','100')
 #lista.append(gg)
+
+#ver estoque
+#tirar do estoque
+#modificar estoque
+#colocar produtos recebidos no estoque
 
 class Logistica:
     def Main():
@@ -12,6 +18,7 @@ class Logistica:
         print("#######PERFIL Logistica#######")
         print("1-Verificar/Modificar solicitações")
         print("2-Retirada de produto")
+        print("3-Verificar/Modificar Estoque")
         print("5-Logout")
         r = input(": ")
         if int(r) == 1:
@@ -19,6 +26,10 @@ class Logistica:
             Logistica.Main()
         elif int(r) == 2:
             Logistica.Retirada()
+            Logistica.Main()
+        elif int(r) == 3:
+            Logistica.VerEstoque()
+            Logistica.Main()
         elif int(r) == 5:
             return
         else:
@@ -89,11 +100,42 @@ class Logistica:
             print("Aguardando Requisições")            
         else:
             y = input("Modificar item nº:")
-            if y == :
-                Logistica.Main()
+            if y == 0:
+                return
             for x in range(len(lista)):
                     if x == int(y):
                         r = input("Sim(1)   Não(0)")
                         lista[x].entrega = r
+                        pp = ObjetoPedido.Pedido(lista[x].nome, lista[x].qtd)
+                        estoque.append(pp)
         x = input("")
         Logistica.Main()
+
+    def VerEstoque(): #mostra items do estoque
+        clear()
+        h = 0
+        for obj in estoque:
+            print(obj.qtd+" "+obj.nome)
+            h=h+1
+        if h == 0:
+            print('estoque vazio')
+            x = input("")
+            return
+        else:       #modificar itens (necessario?????)
+            y = input("Retirar(1)   Modificar(2)")
+            if y == 0:
+                return
+            elif y == 1:
+                t = input('nome registrado:')
+                for obj in lista:
+                        if obj.nome == t:
+
+
+            elif y == 2:
+                for x in range(len(lista)):
+                        if x == int(y)-1:
+                            r = input("Sim(1)   Não(0)")
+                            lista[x].entrega = r
+        x = input("")
+        Logistica.Main()
+        
