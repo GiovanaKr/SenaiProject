@@ -1,6 +1,7 @@
 #Operario
 import ObjetoPedido
 import os
+from datetime import datetime
 clear = lambda: os.system('cls')
 lista = ObjetoPedido.listaP
 estoque = ObjetoPedido.listaE
@@ -8,7 +9,6 @@ estoque = ObjetoPedido.listaE
 #pp = ObjetoPedido.Pedido('caneta','10')
 #lista.append(pp)
 
-#ver estoque
 #comparar pedido com o que tem no estoque
 
 class Operario:
@@ -24,17 +24,13 @@ class Operario:
         r = int(input(": "))
         if r == 1:
             Operario.CriarPedido()
-            Operario.Main()
         elif r == 2:
             Operario.VerLista()
-            Operario.Main()
         elif r == 3:
             Operario.VerEstoque()
-            Operario.Main()
         elif r == 5:
             return
-        else:
-            Operario.Main()
+        Operario.Main()
  
     def Retirar(): #mostra se tem pedidos para serem retirados
         h = 0
@@ -54,40 +50,42 @@ class Operario:
         qtd = input("Quantidade:")
         pdd = ObjetoPedido.Pedido(nome,qtd)
         pdd.numero = (len(lista)+1)
+        data = datetime.now()       #pega data
+        pdd.dataPed = data.strftime('%d/%m/%Y %H:%M') #salva data atual
         lista.append(pdd)
         return
 
     def VerLista(): #lista pedidos
         clear()
         for obj in lista:
-            print("Item: "+obj.qtd+" "+obj.nome)
+            print('['+obj.dataPed+']'+" Requisição nº"+str(obj.numero))
+            print(obj.qtd+" "+obj.nome)
             
             if obj.aprovGen == '0':
-                print("[gerencia]Negado")
-                print('Motivo: '+obj.justificativa)
+                print('['+obj.dataGen+']'+"[gerencia]Negado")
+                print('Motivo: '+str(obj.justificativa))
             elif obj.aprovGen == '2':
                 print("[gerencia]Sendo examinado")
             elif obj.aprovGen == '1':
-                if obj.modifica != '0': #mostra modificação
+                if not obj.modifica == 0: #mostra modificação
                     print(obj.modifica)
-                print("[gerencia]Aprovado")
-
+                print('['+obj.dataGen+']'+"[gerencia]Aprovado")
 
                 if int(obj.aprovCom) == 0:
-                    print("[Compras]Negado")
-                    print('Motivo: '+obj.justificativa)
+                    print('['+obj.dataCom+']'+"[Compras]Negado")
+                    print('Motivo: '+str(obj.justificativa))
                 elif int(obj.aprovCom) == 2:
                     print("[Compras]Sendo examinado")
                 elif int(obj.aprovCom) == 1:
-                    print("[Compras]Aprovado")
+                    print('['+obj.dataCom+']'+"[Compras]Aprovado")
 
                     if int(obj.log) == 0:
-                        print("[Logistica]Negado")
-                        print('Motivo: '+obj.justificativa)
+                        print('['+obj.dataLog+']'+"[Logistica]Negado")
+                        print('Motivo: '+str(obj.justificativa))
                     elif int(obj.log) == 2:
                         print("[Logistica]Sendo examinado")
                     elif int(obj.log) == 1:
-                        print("[Logistica]Aprovado")
+                        print('['+obj.dataLog+']'+"[Logistica]Aprovado")
                         if int(obj.entrega) == 0:
                             print("[Logistica]!Retirar!")
             print("")
@@ -107,3 +105,10 @@ class Operario:
             return
         x = input("")
         return
+
+#from datetime import datetime
+
+#data_e_hora_atuais = datetime.now()
+#data_e_hora_em_texto = data_e_hora_atuais.strftime('%d/%m/%Y %H:%M')
+
+#print(data_e_hora_em_texto)
