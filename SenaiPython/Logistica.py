@@ -1,16 +1,19 @@
 import ObjetoPedido
 import os
+from datetime import datetime
 clear = lambda: os.system('cls')
 lista = ObjetoPedido.listaP
 estoque = ObjetoPedido.listaE
 
-#gg = ObjetoPedido.Pedido('papel','100')
-#lista.append(gg)
+gg = ObjetoPedido.Pedido('papel','100')
+gg.aprovLog = 1
+gg.entrega = 0
+gg.numero = 1
+lista.append(gg)
 
-#ver estoque
-#tirar do estoque
-#modificar estoque
-#colocar produtos recebidos no estoque
+#resolver modificações no estoque
+#retirar do estoque = retirada de produto
+#receber produto = coloca no estoque
 
 class Logistica:
     def Main():
@@ -23,18 +26,15 @@ class Logistica:
         r = input(": ")
         if int(r) == 1:
             Logistica.Lista()
-            Logistica.Main()
         elif int(r) == 2:
             Logistica.Retirada()
-            Logistica.Main()
         elif int(r) == 3:
             Logistica.VerEstoque()
-            Logistica.Main()
         elif int(r) == 5:
             return
-        else:
-            Logistica.Main()
+        Logistica.Main()
 
+    #recebe pedido e coloca no estoque
     def Lista():
         clear()
         h = 0
@@ -42,7 +42,8 @@ class Logistica:
         print("")
         for x in range(len(lista)): #para cada item na lista
             if int(lista[x].aprovCom) == 1 :
-                print(str(x+1)+" "+"Item: "+lista[x].qtd+" "+lista[x].nome)
+                print("Requisição nº"+str(lista[x].numero))
+                print(lista[x].qtd+" "+lista[x].nome)
                 if int(lista[x].log) == 2:
                     print("Aguardando verificação")
                 elif int(lista[x].log) == 1:
@@ -58,59 +59,62 @@ class Logistica:
             return
         else:
             y = input("Modificar item nº:")
-            d = int(y)-1
             if int(y) == 0:
                 return
             for x in range(len(lista)):
                 if int(lista[x].aprovCom) == 1 :
-                    if x == d:
+                    if x == int(y)-1:
                         print(lista[x].qtd + " " +lista[x].nome)
                         r = input("Recebido(1)   Recusado(0)")
-                        if  int(r) == 0:
-                            lista[x].justificava=input('Motivo:')
 
-                        if r == 0:
-                            Logistica.Main()
-                        if int(r) == 0 or int(r) == 1:
+                        if  int(r) == 0:    #se recusado
+                            lista[x].justificativa=input('Motivo:')
+                            lista[x].log = r
+                            data = datetime.now()       #pega data
+                            lista[x].dataLog = data.strftime('%d/%m/%Y %H:%M') #salva data atual
+                            
+                        elif int(r) == 1:   #se aceito
                             lista[x].log = r 
+                            data = datetime.now()       #pega data
+                            lista[x].dataLog = data.strftime('%d/%m/%Y %H:%M') #salva data atual
+
                         else:
                             print("input incorreto")
                             x = input("")
                             Logistica.Lista()
 
-                        if int(lista[x].log) == 1:
-                            s = input("Foi entregue(1)  Em espera(0) ")
-                            lista[x].entrega = s
-
         x = input("")
-        Logistica.Main()
+        Logistica.Lista()
 
+    #entrega pedido para operario e tira item do estoque
     def Retirada():
         clear()
         print("pressione '0' para sair")
         print("")
         h=0
-        for x in range(len(lista)):
+        for x in range(len(lista)):     #lista produtos recebidos
             if (int(lista[x].log)==1):
                 if (int(lista[x].entrega)==0):
-                    print(str(x)+" "+"Item: "+lista[x].qtd+" "+lista[x].nome)
+                    print("Requisição nº"+str(lista[x].numero))
+                    print(lista[x].qtd+" "+lista[x].nome)
                     h=h+1
 
         if h==0: 
-            print("Aguardando Requisições")            
+            print("Aguardando Requisições")         #lista vazia   
         else:
             y = input("Modificar item nº:")
             if y == 0:
                 return
-            for x in range(len(lista)):
-                    if x == int(y):
+            for x in range(len(lista)):     #resolver essa parte!!!!!!!!!!
+                    if x == int(y)-1:
                         r = input("Sim(1)   Não(0)")
                         lista[x].entrega = r
                         pp = ObjetoPedido.Pedido(lista[x].nome, lista[x].qtd)
                         estoque.append(pp)
         x = input("")
-        Logistica.Main()
+        return
 
+    #modificar quantidade de um item especifico
     def VerEstoque(): #mostra items do estoque
         clear()
         h = 0
@@ -129,8 +133,8 @@ class Logistica:
                 t = input('nome registrado:')
                 for obj in lista:
                         if obj.nome == t:
-
-
+                            print('achei item:'+t)
+                            input('')
             elif y == 2:
                 for x in range(len(lista)):
                         if x == int(y)-1:
