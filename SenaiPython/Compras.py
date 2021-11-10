@@ -1,10 +1,20 @@
 import ObjetoPedido
 import os
+from datetime import datetime
 clear = lambda: os.system('cls')
 lista = ObjetoPedido.listaP
 
 #gg = ObjetoPedido.Pedido('papel','100')
+#gg.aprovGen = 1
+#gg.numero = 1
 #lista.append(gg)
+
+#pp = ObjetoPedido.Pedido('papel','100')
+#pp.aprovGen = 1
+#pp.numero = 2
+#lista.append(pp)
+
+#qual marca foi comprada
 
 class Compras:
     def Main():
@@ -15,11 +25,11 @@ class Compras:
         r = input(": ")
         if int(r) == 1:
             Compras.Lista()
-            Compras.Main()
         elif int(r) == 5:
             return
         else:
             Compras.Main()
+        Compras.Main()
 
     def Lista():
         clear()
@@ -28,7 +38,8 @@ class Compras:
         print("")
         for x in range(len(lista)): #para cada item na lista
             if int(lista[x].aprovGen) == 1 :
-                print(str(x)+" "+"Item: "+lista[x].qtd+" "+lista[x].nome)
+                print("Requisição nº"+str(lista[x].numero))
+                print(lista[x].qtd+" "+lista[x].nome)
                 if int(lista[x].aprovCom) == 2:
                     print("Aguardando verificação")
                 elif int(lista[x].aprovCom) == 1:
@@ -38,26 +49,30 @@ class Compras:
                 print("")
                 h=h+1
 
-        if h == 0 :
+        if h == 0 :     #caso lista vazia
             print("Aguardando requisições") 
             f = input('')
             return
         else:
             y = input("Modificar item nº:")
-            d = int(y)-1 #numero certo
             if int(y) == 0:
                 return
             for x in range(len(lista)):
                 if int(lista[x].aprovGen) == 1 :
-                    if x == d:
+                    if x == int(y)-1:
                         print(lista[x].qtd + " " +lista[x].nome)
                         r = input("Aprovar(1)   Reprovar(0)")
-                        if r == 's':
-                            Compras.Main() 
                         if  int(r) == 0:
-                            lista[x].justificava=input('Motivo:')                      
+                            lista[x].justificativa=input('Motivo:')  
+                            lista[x].aprovCom = r
+                            data = datetime.now()       #pega data
+                            lista[x].dataCom = data.strftime('%d/%m/%Y %H:%M') #salva data atual                    
+
                         if int(r) == 0 or int(r) == 1:
                             lista[x].aprovCom = r 
+                            data = datetime.now()       #pega data
+                            lista[x].dataCom = data.strftime('%d/%m/%Y %H:%M') #salva data atual 
+
                         else:
                             print("input incorreto")
                             x = input("")
