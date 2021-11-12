@@ -80,5 +80,5 @@ class Gerente:
                         else:
                             print("input incorreto")
                             x = input("")
-                            Gerente.Lista()
+                            return
         Gerente.Lista()
