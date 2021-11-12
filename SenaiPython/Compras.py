@@ -4,16 +4,7 @@ from datetime import datetime
 clear = lambda: os.system('cls')
 lista = ObjetoPedido.listaP
 
-#gg = ObjetoPedido.Pedido('papel','100')
-#gg.aprovGen = 1
-#gg.numero = 1
-#lista.append(gg)
-
-#pp = ObjetoPedido.Pedido('papel','100')
-#pp.aprovGen = 1
-#pp.numero = 2
-#lista.append(pp)
-
+#tirar itens aprovados
 #qual marca foi comprada
 
 class Compras:
@@ -27,8 +18,7 @@ class Compras:
             Compras.Lista()
         elif int(r) == 5:
             return
-        else:
-            Compras.Main()
+
         Compras.Main()
 
     def Lista():
@@ -36,8 +26,8 @@ class Compras:
         h = 0
         print("pressione '0' para sair")
         print("")
-        for x in range(len(lista)): #para cada item na lista
-            if int(lista[x].aprovGen) == 1 :
+        for x in range(len(lista)): #mostra pedidos abertos
+            if int(lista[x].aprovGen) == 1 and int(lista[x].aprovCom) == 2 :
                 print("Requisição nº"+str(lista[x].numero))
                 print(lista[x].qtd+" "+lista[x].nome)
                 if int(lista[x].aprovCom) == 2:
@@ -49,7 +39,7 @@ class Compras:
                 print("")
                 h=h+1
 
-        if h == 0 :     #caso lista vazia
+        if h == 0 :     #caso lista vazia/sem pedidos abertos
             print("Aguardando requisições") 
             f = input('')
             return
