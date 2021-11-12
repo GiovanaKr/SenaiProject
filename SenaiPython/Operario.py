@@ -58,36 +58,36 @@ class Operario:
     def VerLista(): #lista pedidos
         clear()
         for obj in lista:
-            print('['+obj.dataPed+']'+" Requisição nº"+str(obj.numero))
-            print(obj.qtd+" "+obj.nome)
+            print(obj.nome.upper()+" - "+obj.qtd.upper())
+            print('['+str(obj.dataPed)+']'+" Requisição nº"+str(obj.numero))
             
-            if obj.aprovGen == '0':
-                print('['+obj.dataGen+']'+"[gerencia]Negado")
+            if int(obj.aprovGen) == 0:                                 #gerente
+                print('['+str(obj.dataGen)+']'+"[gerencia]Negado")
                 print('Motivo: '+str(obj.justificativa))
-            elif obj.aprovGen == '2':
+            elif int(obj.aprovGen) == 2:
                 print("[gerencia]Sendo examinado")
-            elif obj.aprovGen == '1':
-                if not obj.modifica == 0: #mostra modificação
-                    print(obj.modifica)
-                print('['+obj.dataGen+']'+"[gerencia]Aprovado")
+            elif int(obj.aprovGen) == 1:
+                if not int(obj.modifica) == 0: #mostra modificação
+                    print(str(obj.modifica))
+                print('['+str(obj.dataGen)+']'+"[gerencia]Aprovado")
 
-                if int(obj.aprovCom) == 0:
-                    print('['+obj.dataCom+']'+"[Compras]Negado")
+                if int(obj.aprovCom) == 0:                          #compras
+                    print('['+str(obj.dataCom)+']'+"[Compras]Negado")
                     print('Motivo: '+str(obj.justificativa))
                 elif int(obj.aprovCom) == 2:
                     print("[Compras]Sendo examinado")
                 elif int(obj.aprovCom) == 1:
-                    print('['+obj.dataCom+']'+"[Compras]Aprovado")
+                    print('['+str(obj.dataCom)+']'+"[Compras]Aprovado")
 
-                    if int(obj.log) == 0:
-                        print('['+obj.dataLog+']'+"[Logistica]Negado")
+                    if int(obj.log) == 0:                           #logistica
+                        print('['+str(obj.dataLog)+']'+"[Logistica]Negado")
                         print('Motivo: '+str(obj.justificativa))
                     elif int(obj.log) == 2:
                         print("[Logistica]Sendo examinado")
                     elif int(obj.log) == 1:
-                        print('['+obj.dataLog+']'+"[Logistica]Aprovado")
-                        if int(obj.entrega) == 0:
-                            print("[Logistica]!Retirar!")
+                        print('['+str(obj.dataLog)+']'+"[Logistica]Aprovado")
+                        if int(obj.emEstoque) == 1:
+                            print("[Logistica]!estoque!")
             print("")
         x = input("")
         return
@@ -96,7 +96,7 @@ class Operario:
         clear()
         h = 0
         for obj in estoque:
-            print(obj.qtd+" "+obj.nome)
+            print(str(obj.qtd)+" "+str(obj.nome))
             h=h+1
 
         if h == 0:
