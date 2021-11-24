@@ -1,10 +1,6 @@
-import os
 import main
 from tkinter import *
 import sqlite3
-
-clear = lambda: os.system('cls' if os.name in ('nt', 'dos') else 'clear')
-lista = ObjetoPedido.listaP
 
 #Cores
 colorbg = "#47CDB5"
@@ -91,4 +87,3 @@ class Operario:
 
         bt3 = Button(root, text="Logout", command=Operario.logout, border=0, cursor="hand2", activebackground=colorbg)
         bt3.place(x= 20, y=90)
-        
