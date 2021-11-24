@@ -16,7 +16,8 @@ colorsucess = "#018415"
 class Operario:
     def CriarPedido(): #cria pedido novo
         global root
-        root.destroy()
+        global janela
+        root.withdraw()
         janela = Tk()
         janela.geometry("200x200")
         janela.configure(bg=colorbg)
@@ -38,46 +39,42 @@ class Operario:
         #bt.configure(bg=bt, border=0)  
 
     def salvaPedido(nome, qtd):
-        pdd = "INSERT INTO pedidos (_nome, _quantidade, _gerente, _compras, _logistica, _entrega) VALUES('"+nome+"','"+qtd+"','espera','espera','espera','não')"
-        db = main.conn #caminho
-        c = db.cursor()
-        c.execute(pdd)
-        db.commit()
+        if nome:
+            pdd = "INSERT INTO pedidos (_nome, _quantidade, _gerente, _compras, _logistica, _entrega) VALUES('"+nome+"','"+qtd+"','espera','espera','espera','não')"
+            db = main.conn #caminho
+            c = db.cursor()
+            c.execute(pdd)
+            db.commit()
+            janela.withdraw()
+            Operario.main()
  
     def VerLista(): #lista pedidos
-        janela = Tk()
-        janela.geometry("250x300")
-        janela.configure(bg=colorbg)
-        janela.title("Lista Operario")
-        clear() #integrar com o tkinter e database
-        for obj in lista:
-            print("Item: "+obj.qtd+" "+obj.nome)
-            
-            if obj.aprovGen == 0:
-                print("Pedido Negado[gerencia]")
-            elif obj.aprovGen == 2:
-                print("Pedido em Exame")
-            elif obj.com == 0:
-                print("Pedido Negado[compras]")
-            elif obj.com == 2:
-                print("[Aprovado gerencia]")
-                print("Pedido em Exame[compras]")
-            elif obj.log == 0:
-                print("Erro no produto[logistica]")
-            elif obj.log == 2:
-                print("[aprovado compras]")
-                print("Espera do produto[logistica]")
-            elif obj.entrega == 0:
-                print("Esperando retirar produto requisitado!")
-            elif obj.entrega == 1:
-                print("Produto Entregue")
-            print("")
-        x = input("")
+        janela3 = Tk()
+        janela3.geometry("250x300")
+        janela3.configure(bg=colorbg)
+        janela3.title("Lista Operario")
+        #integrar com o tkinter e database
+        
+        listbox = Listbox(janela3)
+        listbox.pack(side = LEFT, fill = BOTH)
+
+        scrollbar = Scrollbar(janela3)
+        scrollbar.pack(side = RIGHT, fill = BOTH)
+
+        for values in range(100):
+            listbox.insert(END, values)
+
+        listbox.config(yscrollcommand = scrollbar.set)
+        scrollbar.config(command = listbox.yview)
+        
+    
+    def logout():
+        root.quit()
 
     def main():
         #Janela Tkinter
         global root
-        main.janela2.destroy()
+        main.janela2.withdraw()
         root = Tk()
         root.geometry("200x200")
         root.configure(bg=colorbg)
@@ -90,9 +87,9 @@ class Operario:
         bt = Button(root, text="Solicitar produto", command=Operario.CriarPedido, border=0, cursor="hand2", activebackground=colorbg)
         bt.place(x= 20, y=40)
 
-        bt2 = Button(root, text="Verificar solicitações", border=0, cursor="hand2", activebackground=colorbg)
+        bt2 = Button(root, text="Verificar solicitações", command=Operario.VerLista, border=0, cursor="hand2", activebackground=colorbg)
         bt2.place(x= 20, y=65)
 
-        bt3 = Button(root, text="Logout", command=main, border=0, cursor="hand2", activebackground=colorbg)
+        bt3 = Button(root, text="Logout", command=Operario.logout, border=0, cursor="hand2", activebackground=colorbg)
         bt3.place(x= 20, y=90)
         
