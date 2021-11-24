@@ -1,5 +1,4 @@
 import os
-import ObjetoPedido ######
 import main
 from tkinter import *
 import sqlite3
