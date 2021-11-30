@@ -43,29 +43,9 @@ def salvaPedido(nome, qtd): #conectar
     janela.withdraw()
     menu_operario()                             
 
-# def query():
-#     conn = sqlite3.connect('address_book.db')
-#     c = conn.cursor()
-#     #query the database
-#     c.execute("SELECT *,oid FROM addresses")
-#     r = c.fetchall()
-
-#     print_records=""
-#     for record in r:
-#         print_records += str(record)+"\n"
-        
-#         #shows first name :
-#         #print_records += str(record[0])+"\n"
-
-#     query_label = Label(root, text=print_records)
-#     query_label.grid(row=8, column=0, columnspan=2)
-
-#     conn.commit()
-#     conn.close()
-
 def VerLista(): #lista pedidos
     janela3 = Tk()
-    janela3.geometry("250x300")
+    janela3.geometry("400x400")
     janela3.configure(bg=colorbg)
     janela3.title("Lista Operario")
     
@@ -73,23 +53,42 @@ def VerLista(): #lista pedidos
     c = conn.cursor()
     #query the database
     c.execute("SELECT *,oid FROM pedidos")
-    r = c.fetchall()
+    data = c.fetchall()
 
-    listbox = Listbox(janela3)
-    listbox.pack(side = LEFT, fill = BOTH)
+    my_tree = ttk.Treeview(janela3)
+    my_tree['columns'] = ("req","nome", "qtd")
 
-    scrollbar = Scrollbar(janela3)
-    scrollbar.pack(side = RIGHT, fill = BOTH)
+    my_scrollbar = ttk.Scrollbar(janela3, orient="vertical", command=my_tree.yview)
+    my_scrollbar.pack(side='right', fill='y')
+    my_tree.configure(yscrollcommand=my_scrollbar.set)
 
-    print_records=""
-    for record in r:
-        listbox.insert(END, "nº"+str(record[0])+" "+str(record[1])+" - "+str(record[2]))
 
-    listbox.config(yscrollcommand = scrollbar.set)
-    scrollbar.config(command = listbox.yview)
+    my_tree.column("#0", width=120, minwidth=25)
+    my_tree.column("req", anchor=W, width= 50)
+    my_tree.column("nome", anchor=CENTER, width=80)
+    my_tree.column("qtd", anchor=W, width=120)
 
-    value = str((listbox.get(ACTIVE)))
-    print(value)
+    my_tree.heading("#0", text="Label", anchor=W)
+    my_tree.heading("req", text="nº req", anchor=W)
+    my_tree.heading("nome", text="Produto", anchor=CENTER)
+    my_tree.heading("qtd", text="qtd", anchor=W)
+
+    my_tree.insert(parent='', index='end', iid=0, text="Pedidos espera", values=(" "," "," "))
+    my_tree.insert(parent='', index='end', iid=1, text="Pedidos aprovados", values=(" "," "," "))
+    my_tree.insert(parent='', index='end', iid=2, text="Pedidos negados", values=(" "," "," "))
+    count=3
+    for record in data:
+        x=0
+        if record[3] == "negado" or record[4] == "negado" or record[5] == "negado" :
+            x='2'
+        elif record[3] == "aprovado" and record[4] == "aprovado" and record[5] == "aprovado" :
+            x='1'
+        else:
+            x='0'
+        my_tree.insert(parent=x, index='end', iid=count, text=" ", values=(str(record[0]), str(record[1]), str(record[2])))
+        count+=1
+
+    my_tree.pack(side='left', fill='y')
 
     conn.commit()
     conn.close()
