@@ -1,6 +1,7 @@
 import os
 from tkinter import *
 import sqlite3
+from tkinter import ttk
 
 #Cores
 colorbg = "#47CDB5"
