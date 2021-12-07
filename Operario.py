@@ -35,7 +35,7 @@ def CriarPedido(): #cria pedido novo
     #bt.configure(bg=bt, border=0)  
 
 def salvaPedido(nome, qtd): #conectar
-    pdd = "INSERT INTO pedidos (_nome, _quantidade, _gerente, _compras, _logistica, _entrega) VALUES('"+nome+"','"+qtd+"','espera','espera','espera','não')"
+    pdd = "INSERT INTO pedidos (_nome, _quantidade, _gerente, _compras, _logistica, _entrega) VALUES('"+nome+"','"+qtd+"','---','---','---','não')"
     conn = sqlite3.connect('db.db')
     c = conn.cursor()
     c.execute(pdd)
@@ -46,7 +46,7 @@ def salvaPedido(nome, qtd): #conectar
 
 def VerLista(): #lista pedidos
     janela3 = Tk()
-    janela3.geometry("400x400")
+    janela3.geometry("500x400")
     janela3.configure(bg=colorbg)
     janela3.title("Lista Operario")
     
@@ -57,36 +57,35 @@ def VerLista(): #lista pedidos
     data = c.fetchall()
 
     my_tree = ttk.Treeview(janela3)
-    my_tree['columns'] = ("req","nome", "qtd")
+    my_tree['columns'] = ("req","nome", "qtd", "ger", "com", "log")
 
     my_scrollbar = ttk.Scrollbar(janela3, orient="vertical", command=my_tree.yview)
     my_scrollbar.pack(side='right', fill='y')
     my_tree.configure(yscrollcommand=my_scrollbar.set)
 
 
-    my_tree.column("#0", width=120, minwidth=25)
+    my_tree.column("#0", width=0)
     my_tree.column("req", anchor=W, width= 50)
     my_tree.column("nome", anchor=CENTER, width=80)
-    my_tree.column("qtd", anchor=W, width=120)
+    my_tree.column("qtd", anchor=W, width=80)
+    my_tree.column("ger", anchor=W, width=80)
+    my_tree.column("com", anchor=W, width=80)
+    my_tree.column("log", anchor=W, width=80)
+
+
 
     my_tree.heading("#0", text="Label", anchor=W)
     my_tree.heading("req", text="nº req", anchor=W)
     my_tree.heading("nome", text="Produto", anchor=CENTER)
     my_tree.heading("qtd", text="qtd", anchor=W)
+    my_tree.heading("ger", text="gerente", anchor=W)
+    my_tree.heading("com", text="compras", anchor=W)
+    my_tree.heading("log", text="logistica", anchor=W)
 
-    my_tree.insert(parent='', index='end', iid=0, text="Pedidos espera", values=(" "," "," "))
-    my_tree.insert(parent='', index='end', iid=1, text="Pedidos aprovados", values=(" "," "," "))
-    my_tree.insert(parent='', index='end', iid=2, text="Pedidos negados", values=(" "," "," "))
-    count=3
+
+    count=0
     for record in data:
-        x=0
-        if record[3] == "negado" or record[4] == "negado" or record[5] == "negado" :
-            x='2'
-        elif record[3] == "aprovado" and record[4] == "aprovado" and record[5] == "aprovado" :
-            x='1'
-        else:
-            x='0'
-        my_tree.insert(parent=x, index='end', iid=count, text=" ", values=(str(record[0]), str(record[1]), str(record[2])))
+        my_tree.insert(parent="", index='end', iid=count, text=" ", values=(str(record[0]), str(record[1]), str(record[2]), str(record[3]), str(record[4]), str(record[5])))
         count+=1
 
     my_tree.pack(side='left', fill='y')
