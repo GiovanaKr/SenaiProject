@@ -1,5 +1,6 @@
 import os
 from tkinter import *
+import sqlite3
 
 #Cores
 colorbg = "#47CDB5"
@@ -8,9 +9,6 @@ camp = "#B5B3C1"
 colorerro = "#ff0000"
 colorsucess = "#018415"
 
-#sair da def lista()
-#input incorreto simples
-#loop lista
 
 def menu_compras():
     root = Tk()
@@ -28,49 +26,67 @@ def menu_compras():
     #bt2 = Button(root, text="Logout", command=main, border=0, cursor="hand2", activebackground=colorbg)
     #bt2.place(x= 20, y=90)
 
-def Lista(): #Alterar os input para tkinter com database
+def Lista(): 
     janela = Tk()
-    janela.geometry("250x300")
+    janela.geometry("350x300")
     janela.configure(bg=colorbg)
     janela.title("Lista Compras")
-    clear()
-    h = 0
-    print("pressione 's' para sair")
-    print("")
-    for x in range(len(lista)): #para cada item na lista
-        if int(lista[x].aprovGen) == 1 :
-            print(str(x)+" "+"Item: "+lista[x].qtd+" "+lista[x].nome)
-            if int(lista[x].aprovCom) == 2:
-                print("Aguardando verificação")
-            elif int(lista[x].aprovCom) == 1:
-                print("Aprovado")
-            else:
-                print("Negado")
-            print("")
-            h=h+1
 
-    if h == 0 :
-        print("Aguardando requisições") 
-    else:
-        y = input("Modificar item nº:")
-        if y == 's':
-            main()
-        for x in range(len(lista)):
-            if int(lista[x].aprovGen) == 1 :
-                if x == int(y):
-                    print(lista[x].qtd + " " +lista[x].nome)
-                    r = input("Aprovar(1)   Reprovar(0)")
-                    if r == 's':
-                        main()                       
-                    if int(r) == 0 or int(r) == 1:
-                        lista[x].aprovCom = r 
-                    else:
-                        print("input incorreto")
-                        x = input("")
-                        Lista()                    
+    def done(): ##passa adiante
+        conn = sqlite3.connect('db.db')
+        c = conn.cursor()
+        c.execute("SELECT *,oid FROM pedidos")
+        data = c.fetchall()
 
-#try:
-#    x = int(r)
-#except ValueError: #se input não for 's' nem int
-#    print("input incorreto")
-#    x = input("")
+        for key in l:
+            if l.get(key)[1].get() == 1:
+                print("key: "+str(key))
+                c.execute("UPDATE pedidos SET _compras = 'aprovado' WHERE _requisicao = '"+key+"' ")
+                conn.commit()
+                conn.close()
+    
+    def miss(): ##cancela
+        conn = sqlite3.connect('db.db')
+        c = conn.cursor()
+        c.execute("SELECT *,oid FROM pedidos")
+        data = c.fetchall()
+
+        for key in l:
+            if l.get(key).get() != 0:
+                c.execute("UPDATE pedidos SET _compras = 'negado' WHERE _requisicao = "+key+" ")
+                conn.commit()
+                conn.close()
+
+    def clean(): ##limpa selecionados
+        for key in l:
+            l.get(key).deselect()
+            
+
+    frames1= Frame(janela,width = 250, height=300, highlightbackground ="#47CDB5", highlightthicknes=3)
+    frames1.grid(row=0,column=0)
+    frames2= Frame(janela,width = 200, height=300, highlightbackground ="#47CDB5", highlightthicknes=3)
+    frames2.grid(row=0,column=1)
+
+    bt_done = Button(frames2, text="compra feita", command=done)
+    bt_done.place(x=30 ,y=40)
+
+    bt_done = Button(frames2, text="item em falta", command=miss)
+    bt_done.place(x=30 ,y=80)
+
+    bt_done = Button(frames2, text="limpar", command=clean)
+    bt_done.place(x=30 ,y=120)
+
+    conn = sqlite3.connect('db.db')
+    c = conn.cursor()
+    c.execute("SELECT *,oid FROM pedidos")
+    data = c.fetchall()
+
+    l = {}
+    x=0
+    for obj in data:
+        var = IntVar()
+        b = Checkbutton(frames1, text="req nº" + str(obj[0]) +" "+ str(obj[1]) +" "+ str(obj[2]), variable=var)
+        l[obj[0]]=[b, var]
+        l.get(obj[0])[0].pack(anchor=W)
+        x+=1
+    
