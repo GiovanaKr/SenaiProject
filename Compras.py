@@ -85,9 +85,10 @@ def Lista():
     l = {}
     x=0
     for obj in data:
-        var = IntVar()
-        b = Checkbutton(frames1, text="req nº" + str(obj[0]) +" "+ str(obj[1]) +" "+ str(obj[2]), variable=var)
-        l[obj[0]]=[b, var]
-        l.get(obj[0])[0].pack(anchor=W)
-        x+=1
+        if obj[3] == 'aprovado' and obj[4] == '---':
+            var = IntVar()
+            b = Checkbutton(frames1, text="req nº" + str(obj[0]) +" "+ str(obj[1]) +" "+ str(obj[2]), variable=var)
+            l[obj[0]]=[b, var]
+            l.get(obj[0])[0].pack(anchor=W)
+            x+=1
     
