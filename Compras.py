@@ -52,14 +52,15 @@ def Lista():
         data = c.fetchall()
 
         for key in l:
-            if l.get(key).get() != 0:
-                c.execute("UPDATE pedidos SET _compras = 'negado' WHERE _requisicao = "+key+" ")
+            if l.get(key)[1].get() == 1:
+                print("key: "+str(key))
+                c.execute("UPDATE pedidos SET _compras = 'negado' WHERE _requisicao = '"+key+"' ")
                 conn.commit()
                 conn.close()
 
     def clean(): ##limpa selecionados
         for key in l:
-            l.get(key).deselect()
+            l.get(key)[0].deselect()
             
 
     frames1= Frame(janela,width = 250, height=300, highlightbackground ="#47CDB5", highlightthicknes=3)
