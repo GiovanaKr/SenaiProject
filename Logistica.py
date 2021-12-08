@@ -1,5 +1,10 @@
 import os
 from tkinter import *
+import sqlite3
+from tkinter import ttk
+
+conn = sqlite3.connect('db.db')
+c = conn.cursor()
 
 #Cores
 colorbg = "#47CDB5"
@@ -9,72 +14,101 @@ colorerro = "#ff0000"
 colorsucess = "#018415"
 
 
-#sair da def lista()
-#input incorreto simples
-#loop lista
-
-#fazer retirada de produto
-
 def menu_logistica():
-    main.janela2.destroy()
     root = Tk()
     root.geometry("200x200")
     root.configure(bg=colorbg)
-    root.title("Operario")
+    root.title("logistica")
     
-    lb = Label(root, text="Perfil Operacional")
+    lb = Label(root, text="Perfil logistica")
     lb.place(x=20,y=15)
     lb.configure(bg=colorbg, border=0)
 
-    bt = Button(root, text="Solicitar produto", border=0, cursor="hand2", activebackground=colorbg)
+    bt = Button(root, text="Verificar/Modificar solicitações", command=Lista, border=0, cursor="hand2", activebackground=colorbg)
     bt.place(x= 20, y=40)
 
-    bt2 = Button(root, text="Verificar solicitações", border=0, cursor="hand2", activebackground=colorbg)
-    bt2.place(x= 20, y=65)
 
-    #bt3 = Button(root, text="Logout", border=0, cursor="hand2", activebackground=colorbg)
-    #bt3.place(x= 20, y=90)
+def Lista(): 
+    def entregue():
 
-def Lista(): #trocar os input e atualizar para o tkinter
-    janela = Tk() #Integrar com a database
-    janela.geometry("250x300")
-    janela.configure(bg=colorbg)
-    janela.title("Lista Logistica")
-    clear()
-    h = 0
-    print("pressione 's' para sair") 
-    print("")
-    for x in range(len(lista)): #para cada item na lista
-        if int(lista[x].aprovCom) == 1 :
-            print(str(x)+" "+"Item: "+lista[x].qtd+" "+lista[x].nome)
-            if int(lista[x].log) == 2:
-                print("Aguardando verificação")
-            elif int(lista[x].log) == 1:
-                print("Aprovado")
-            else:
-                print("Negado")
-            print("")
-            h=h+1
+        itemSelection = my_tree.selection()[0]
+        valores = my_tree.item(itemSelection, 'values')
 
-    if h == 0 :
-        print("Aguardando requisições")
-    else:
-        y = input("Modificar item nº:")
-        if y == 's':
-            Logistica.main()
-        for x in range(len(lista)):
-            if int(lista[x].aprovCom) == 1 :
-                if x == int(y):
-                    print(lista[x].qtd + " " +lista[x].nome)
-                    r = input("Aprovar(1)   Reprovar(0)")
+        req = valores[0]
+        
+        c.execute("UPDATE pedidos SET _logistica= 'aprovado' WHERE _requisicao='"+req+"'")
+        conn.commit()
 
-                    if r == 's':
-                        Logistica.main()
-                    if int(r) == 0 or int(r) == 1:
-                        lista[x].log = r 
-                    else:
-                        print("input incorreto")
-                        x = input("")
-                        Lista()
-    x = input("")
-    Lista()
+        janela1.withdraw()
+        Lista()   
+    
+    def retirado(): 
+
+        itemSelection = my_tree.selection()[0]
+        valores = my_tree.item(itemSelection, 'values')
+
+        req = valores[0]
+
+        c.execute("UPDATE pedidos SET _entrega= 'sim' WHERE _requisicao='"+req+"'")
+        conn.commit()
+
+        janela1.withdraw()
+        Lista()   
+
+
+    janela1 = Tk()
+    janela1.geometry("450x350")
+    janela1.configure(bg=colorbg, border=0)
+    janela1.title("Gerente")
+
+    #query the database
+    c.execute("SELECT *,oid FROM pedidos")
+    data = c.fetchall()
+ 
+    frames1= Frame(janela1,width = 450, height=50, highlightbackground ="#47CDB5", highlightthicknes=3)
+    frames1.grid(row=0,column=0)
+    
+    frames2= Frame(janela1,width = 450, height=150, highlightbackground ="#47CDB5", highlightthicknes=3)
+    frames2.grid(row=1,column=0)
+
+    
+    bt_alterar=Button(frames1,text='pedido entregue',command=entregue)
+    bt_alterar.place(x=220, y=10)
+
+    bt_alterar=Button(frames1,text='pedido retirado',command=retirado)
+    bt_alterar.place(x=120, y=10)
+
+    
+    my_tree = ttk.Treeview(frames2)
+    my_tree['columns'] = ("req","nome", "qtd", "ger", "com", "log", "ent")
+
+    my_scrollbar = ttk.Scrollbar(frames2, orient="vertical", command=my_tree.yview)
+    my_scrollbar.pack(side='right', fill='y')
+    my_tree.configure(yscrollcommand=my_scrollbar.set)
+
+    my_tree.column("#0", width=0)
+    my_tree.column("req", anchor=W, width= 40)
+    my_tree.column("nome", anchor=CENTER, width=60)
+    my_tree.column("qtd", anchor=W, width=50)
+    my_tree.column("ger", anchor=W, width=60)
+    my_tree.column("com", anchor=W, width=60)
+    my_tree.column("log", anchor=W, width=60)
+    my_tree.column("ent", anchor=W, width=70)
+
+    my_tree.heading("#0", text="Label", anchor=W)
+    my_tree.heading("req", text="nº req", anchor=W)
+    my_tree.heading("nome", text="Produto", anchor=CENTER)
+    my_tree.heading("qtd", text="qtd", anchor=W)
+    my_tree.heading("ger", text="gerente", anchor=W)
+    my_tree.heading("com", text="compras", anchor=W)
+    my_tree.heading("log", text="logistica", anchor=W)
+    my_tree.heading("ent", text="retirado", anchor=W)
+
+
+    count = 0
+    for record in data:
+        if record[4] == "aprovado":
+            my_tree.insert(parent="", index='end', iid=count, text=" ", values=(str(record[0]), str(record[1]), str(record[2]), str(record[3]), str(record[4]), str(record[5]), str(record[6])))
+            count +=1
+    
+    my_tree.pack(side='left', fill='y')
