@@ -1,7 +1,10 @@
 import os
 from tkinter import *
 import sqlite3
+from tkinter import ttk
 
+conn = sqlite3.connect('db.db')
+c = conn.cursor()
 #Cores
 colorbg = "#47CDB5"
 bt = "#00A687"
@@ -26,69 +29,81 @@ def menu_compras():
     #bt2 = Button(root, text="Logout", command=main, border=0, cursor="hand2", activebackground=colorbg)
     #bt2.place(x= 20, y=90)
 
-def Lista(): 
-    janela = Tk()
-    janela.geometry("350x300")
-    janela.configure(bg=colorbg)
-    janela.title("Lista Compras")
+def Lista():
+    def aprovado():
 
-    def done(): ##passa adiante
-        conn = sqlite3.connect('db.db')
-        c = conn.cursor()
-        c.execute("SELECT *,oid FROM pedidos")
-        data = c.fetchall()
+        itemSelection = my_tree.selection()[0]
+        valores = my_tree.item(itemSelection, 'values')
 
-        for key in l:
-            if l.get(key)[1].get() == 1:
-                print("key: "+str(key))
-                c.execute("UPDATE pedidos SET _compras = 'aprovado' WHERE _requisicao = '"+key+"' ")
-                conn.commit()
-                conn.close()
+        req = valores[0]
+        
+        c.execute("UPDATE pedidos SET _compras= 'aprovado' WHERE _requisicao='"+req+"'")
+        conn.commit()
+
+        janela1.withdraw()
+        Lista()   
     
-    def miss(): ##cancela
-        conn = sqlite3.connect('db.db')
-        c = conn.cursor()
-        c.execute("SELECT *,oid FROM pedidos")
-        data = c.fetchall()
+    def negado(): 
 
-        for key in l:
-            if l.get(key)[1].get() == 1:
-                print("key: "+str(key))
-                c.execute("UPDATE pedidos SET _compras = 'negado' WHERE _requisicao = '"+key+"' ")
-                conn.commit()
-                conn.close()
+        itemSelection = my_tree.selection()[0]
+        valores = my_tree.item(itemSelection, 'values')
 
-    def clean(): ##limpa selecionados
-        for key in l:
-            l.get(key)[0].deselect()
-            
+        req = valores[0]
 
-    frames1= Frame(janela,width = 250, height=300, highlightbackground ="#47CDB5", highlightthicknes=3)
-    frames1.grid(row=0,column=0)
-    frames2= Frame(janela,width = 200, height=300, highlightbackground ="#47CDB5", highlightthicknes=3)
-    frames2.grid(row=0,column=1)
+        c.execute("UPDATE pedidos SET _compras= 'negado' WHERE _requisicao='"+req+"'")
+        conn.commit()
 
-    bt_done = Button(frames2, text="compra feita", command=done)
-    bt_done.place(x=30 ,y=40)
+        janela1.withdraw()
+        Lista()   
 
-    bt_done = Button(frames2, text="item em falta", command=miss)
-    bt_done.place(x=30 ,y=80)
+    janela1 = Tk()
+    janela1.geometry("450x350")
+    janela1.configure(bg=colorbg, border=0)
+    janela1.title("Gerente")
 
-    bt_done = Button(frames2, text="limpar", command=clean)
-    bt_done.place(x=30 ,y=120)
-
-    conn = sqlite3.connect('db.db')
-    c = conn.cursor()
+    #query the database
     c.execute("SELECT *,oid FROM pedidos")
     data = c.fetchall()
-
-    l = {}
-    x=0
-    for obj in data:
-        if obj[3] == 'aprovado' and obj[4] == '---':
-            var = IntVar()
-            b = Checkbutton(frames1, text="req nº" + str(obj[0]) +" "+ str(obj[1]) +" "+ str(obj[2]), variable=var)
-            l[obj[0]]=[b, var]
-            l.get(obj[0])[0].pack(anchor=W)
-            x+=1
+ 
+    frames1= Frame(janela1,width = 450, height=50, highlightbackground ="#47CDB5", highlightthicknes=3)
+    frames1.grid(row=0,column=0)
     
+    frames2= Frame(janela1,width = 450, height=150, highlightbackground ="#47CDB5", highlightthicknes=3)
+    frames2.grid(row=1,column=0)
+
+    
+    bt_alterar=Button(frames1,text='item em falta',command=negado)
+    bt_alterar.place(x=220, y=10)
+
+    bt_alterar=Button(frames1,text='compra feita',command=aprovado)
+    bt_alterar.place(x=120, y=10)
+
+    
+    my_tree = ttk.Treeview(frames2)
+    my_tree['columns'] = ("req","nome", "qtd", "ger", "com")
+
+    my_scrollbar = ttk.Scrollbar(frames2, orient="vertical", command=my_tree.yview)
+    my_scrollbar.pack(side='right', fill='y')
+    my_tree.configure(yscrollcommand=my_scrollbar.set)
+
+    my_tree.column("#0", width=0)
+    my_tree.column("req", anchor=W, width= 50)
+    my_tree.column("nome", anchor=CENTER, width=80)
+    my_tree.column("qtd", anchor=W, width=100)
+    my_tree.column("ger", anchor=W, width=90)
+    my_tree.column("com", anchor=W, width=90)
+
+    my_tree.heading("#0", text="Label", anchor=W)
+    my_tree.heading("req", text="nº req", anchor=W)
+    my_tree.heading("nome", text="Produto", anchor=CENTER)
+    my_tree.heading("qtd", text="qtd", anchor=W)
+    my_tree.heading("ger", text="gerente", anchor=W)
+    my_tree.heading("com", text="compras", anchor=W)
+
+    count = 0
+    for record in data:
+        if record[3] != "---" or record[3] != "negado":
+            my_tree.insert(parent="", index='end', iid=count, text=" ", values=(str(record[0]), str(record[1]), str(record[2]), str(record[3]), str(record[4])))
+            count +=1
+    
+    my_tree.pack(side='left', fill='y')
