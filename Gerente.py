@@ -23,7 +23,7 @@ def menu_gerente():
     root = Tk()
     root.geometry("200x200")
     root.configure(bg=colorbg)
-    root.title("Operario")
+    root.title("Gerente")
     
     lb = Label(root, text="Perfil Gerencial")
     lb.place(x=20,y=15)
@@ -34,15 +34,31 @@ def menu_gerente():
 
     #bt2 = Button(root, text="Logout", command=main, border=0, cursor="hand2", activebackground=colorbg)
     #bt2.place(x= 20, y=90)
+    
 
 def Verificar():
+    def modificar():
+
+        itemSelection = my_tree.selection()[0]
+        valores = my_tree.item(itemSelection, 'values')
+
+        req = valores[0]
+        
+        nome=bt_codigon.get()
+        
+        quantidade=bt_codigog.get()
+
+        gerente=bt_codigoa.get()
+
+        c.execute("UPDATE pedidos SET _nome='"+nome+"', _quantidade='"+quantidade+"', _gerente ='"+gerente+"' WHERE _requisicao='"+req+"'")
+        conn.commit()
+
+
     janela1 = Tk()
-    janela1.geometry("450x300")
+    janela1.geometry("450x350")
     janela1.configure(bg=colorbg, border=0)
     janela1.title("Gerente")
 
-    conn = sqlite3.connect('db.db')
-    c = conn.cursor()
     #query the database
     c.execute("SELECT *,oid FROM pedidos")
     data = c.fetchall()
@@ -54,7 +70,7 @@ def Verificar():
     frames2.grid(row=1,column=0)
 
     
-    bt_alterar=Button(frames1,text='Alterar')
+    bt_alterar=Button(frames1,text='Alterar',command=modificar)
     bt_alterar.place(x=320, y=10)
 
     bt_codigo=Label(frames1,text='Requsição')
@@ -63,6 +79,7 @@ def Verificar():
     bt_codigoe.place(x=20,y=30)
 
     bt_codigo_nome=Label(frames1,text='Nome')
+
     bt_codigo_nome.place(y=60,x=15)
     bt_codigon=Entry(frames1,width=15)
     bt_codigon.place(x=20,y=90)
@@ -84,7 +101,7 @@ def Verificar():
     my_scrollbar.pack(side='right', fill='y')
     my_tree.configure(yscrollcommand=my_scrollbar.set)
 
-    my_tree.column("#0", width=120, minwidth=25)
+    my_tree.column("#0", width=0)
     my_tree.column("req", anchor=W, width= 50)
     my_tree.column("nome", anchor=CENTER, width=80)
     my_tree.column("qtd", anchor=W, width=120)
@@ -100,6 +117,7 @@ def Verificar():
         count +=1
     
     my_tree.pack(side='left', fill='y')
+    
 
 
 def lista():
@@ -122,10 +140,3 @@ def atualizarpedido( ):
     db.commit()
     janela.withdraw()
     Operario.Main()
-
-def Lista(): #trocar os input e atualizar para o tkinter
-    janela = Tk()  #Integrar com a database
-    janela.geometry("250x300")
-    janela.configure(bg=colorbg)
-    janela.title("Lista Gerente")
-    clear() 
