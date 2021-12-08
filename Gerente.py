@@ -53,9 +53,38 @@ def Verificar():
         c.execute("UPDATE pedidos SET _nome='"+nome+"', _quantidade='"+quantidade+"', _gerente ='"+gerente+"' WHERE _requisicao='"+req+"'")
         conn.commit()
 
+        janela1.withdraw()
+        Verificar()  
+
+    def aprovar(): ##aprova direto
+
+        itemSelection = my_tree.selection()[0]
+        valores = my_tree.item(itemSelection, 'values')
+
+        req = valores[0]
+
+        c.execute("UPDATE pedidos SET  _gerente ='aprovado' WHERE _requisicao='"+req+"'")
+        conn.commit()
+
+        janela1.withdraw()
+        Verificar() 
+
+    def negar(): ##nega direto
+
+        itemSelection = my_tree.selection()[0]
+        valores = my_tree.item(itemSelection, 'values')
+
+        req = valores[0]
+
+        c.execute("UPDATE pedidos SET  _gerente ='negado' WHERE _requisicao='"+req+"'")
+        conn.commit()
+
+        janela1.withdraw()
+        Verificar() 
+
 
     janela1 = Tk()
-    janela1.geometry("450x350")
+    janela1.geometry("450x400")
     janela1.configure(bg=colorbg, border=0)
     janela1.title("Gerente")
 
@@ -72,6 +101,12 @@ def Verificar():
     
     bt_alterar=Button(frames1,text='Alterar',command=modificar)
     bt_alterar.place(x=320, y=10)
+
+    bt_ap=Button(frames1,text='aprovar',command=aprovar)
+    bt_ap.place(x=220, y=10)
+
+    bt_ng=Button(frames1,text='negar',command=negar)
+    bt_ng.place(x=120, y=10)
 
     bt_codigo=Label(frames1,text='Requsição')
     bt_codigo.place(y=2,x=15)
@@ -95,25 +130,27 @@ def Verificar():
     bt_codigoa.place(x=305,y=90)
     
     my_tree = ttk.Treeview(frames2)
-    my_tree['columns'] = ("req","nome", "qtd")
+    my_tree['columns'] = ("req","nome", "qtd", "ger")
 
     my_scrollbar = ttk.Scrollbar(frames2, orient="vertical", command=my_tree.yview)
     my_scrollbar.pack(side='right', fill='y')
     my_tree.configure(yscrollcommand=my_scrollbar.set)
 
     my_tree.column("#0", width=0)
-    my_tree.column("req", anchor=W, width= 50)
-    my_tree.column("nome", anchor=CENTER, width=80)
+    my_tree.column("req", anchor=W, width= 60)
+    my_tree.column("nome", anchor=CENTER, width=100)
     my_tree.column("qtd", anchor=W, width=120)
+    my_tree.column("ger", anchor=W, width=120)
 
     my_tree.heading("#0", text="Label", anchor=W)
     my_tree.heading("req", text="nº req", anchor=W)
     my_tree.heading("nome", text="Produto", anchor=CENTER)
     my_tree.heading("qtd", text="qtd", anchor=W)
+    my_tree.heading("ger", text="gerente", anchor=W)
 
     count = 0
     for record in data:
-        my_tree.insert(parent="", index='end', iid=count, text=" ", values=(str(record[0]), str(record[1]), str(record[2])))
+        my_tree.insert(parent="", index='end', iid=count, text=" ", values=(str(record[0]), str(record[1]), str(record[2]), str(record[3])))
         count +=1
     
     my_tree.pack(side='left', fill='y')
