@@ -1,6 +1,7 @@
 # SenaiProject
 
-trabalho em grupo para classe de Logica de programação
+Desenvolvimento de sistemas(senai sul-joinville 2021)
+trabalho em grupo para classe de Logica de programação 
 
 feito por:
 giovana >> https://github.com/GiovanaKr
