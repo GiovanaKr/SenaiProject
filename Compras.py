@@ -23,7 +23,7 @@ def menu_compras():
     lb.place(x=20,y=15)
     lb.configure(bg=colorbg, border=0)
 
-    bt = Button(root, text="Verificar/Modificar solicitações", command=Lista, border=0, cursor="hand2", activebackground=colorbg)
+    bt = Button(root, text="Confirmar compras", command=Lista, border=0, cursor="hand2", activebackground=colorbg)
     bt.place(x= 20, y=40)
 
     #bt2 = Button(root, text="Logout", command=main, border=0, cursor="hand2", activebackground=colorbg)
@@ -72,10 +72,10 @@ def Lista():
     frames2.grid(row=1,column=0)
 
     
-    bt_alterar=Button(frames1,text='item em falta',command=negado)
+    bt_alterar=Button(frames1,text='Item em falta',command=negado)
     bt_alterar.place(x=220, y=10)
 
-    bt_alterar=Button(frames1,text='compra feita',command=aprovado)
+    bt_alterar=Button(frames1,text='Compra feita',command=aprovado)
     bt_alterar.place(x=120, y=10)
 
     
@@ -96,13 +96,13 @@ def Lista():
     my_tree.heading("#0", text="Label", anchor=W)
     my_tree.heading("req", text="nº req", anchor=W)
     my_tree.heading("nome", text="Produto", anchor=CENTER)
-    my_tree.heading("qtd", text="qtd", anchor=W)
-    my_tree.heading("ger", text="gerente", anchor=W)
-    my_tree.heading("com", text="compras", anchor=W)
+    my_tree.heading("qtd", text="Qtd", anchor=W)
+    my_tree.heading("ger", text="Gerente", anchor=W)
+    my_tree.heading("com", text="Compras", anchor=W)
 
     count = 0
     for record in data:
-        if record[3] != "---" or record[3] != "negado":
+        if record[3] == "aprovado":
             my_tree.insert(parent="", index='end', iid=count, text=" ", values=(str(record[0]), str(record[1]), str(record[2]), str(record[3]), str(record[4])))
             count +=1
     
