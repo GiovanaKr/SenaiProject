@@ -77,10 +77,10 @@ def VerLista(): #lista pedidos
     my_tree.heading("#0", text="Label", anchor=W)
     my_tree.heading("req", text="nº req", anchor=W)
     my_tree.heading("nome", text="Produto", anchor=CENTER)
-    my_tree.heading("qtd", text="qtd", anchor=W)
-    my_tree.heading("ger", text="gerente", anchor=W)
-    my_tree.heading("com", text="compras", anchor=W)
-    my_tree.heading("log", text="logistica", anchor=W)
+    my_tree.heading("qtd", text="Qtd", anchor=W)
+    my_tree.heading("ger", text="Gerente", anchor=W)
+    my_tree.heading("com", text="Compras", anchor=W)
+    my_tree.heading("log", text="Logistica", anchor=W)
 
 
     count=0
@@ -121,7 +121,7 @@ def VerEstoque():
     my_tree.heading("#0", text="Label", anchor=W)
     my_tree.heading("req", text="nº req", anchor=W)
     my_tree.heading("nome", text="Produto", anchor=CENTER)
-    my_tree.heading("qtd", text="qtd", anchor=W)
+    my_tree.heading("qtd", text="Qtd", anchor=W)
 
     count=0
     for record in data:
