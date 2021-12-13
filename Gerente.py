@@ -1,5 +1,3 @@
-import Operario 
-import os
 from tkinter import *
 import sqlite3
 from tkinter import ttk
@@ -102,10 +100,10 @@ def Verificar():
     bt_alterar=Button(frames1,text='Alterar',command=modificar)
     bt_alterar.place(x=320, y=10)
 
-    bt_ap=Button(frames1,text='aprovar',command=aprovar)
+    bt_ap=Button(frames1,text='Aprovar',command=aprovar)
     bt_ap.place(x=220, y=10)
 
-    bt_ng=Button(frames1,text='negar',command=negar)
+    bt_ng=Button(frames1,text='Negar',command=negar)
     bt_ng.place(x=120, y=10)
 
     bt_codigo=Label(frames1,text='Requsição')
@@ -145,8 +143,8 @@ def Verificar():
     my_tree.heading("#0", text="Label", anchor=W)
     my_tree.heading("req", text="nº req", anchor=W)
     my_tree.heading("nome", text="Produto", anchor=CENTER)
-    my_tree.heading("qtd", text="qtd", anchor=W)
-    my_tree.heading("ger", text="gerente", anchor=W)
+    my_tree.heading("qtd", text="Qtd", anchor=W)
+    my_tree.heading("ger", text="Gerente", anchor=W)
 
     count = 0
     for record in data:
@@ -157,23 +155,23 @@ def Verificar():
     
 
 
-def lista():
-    c.execute("SELECT * FROM pedidos order by _requisicao")
-    db = main.conn #caminho
-    c = db.cursor()
-    c.execute(pdd)
-    db.commit()
-    lista = conn.fetchall()
-    print(lista)
+# def lista():
+#     c.execute("SELECT * FROM pedidos order by _requisicao")
+#     db = main.conn #caminho
+#     c = db.cursor()
+#     c.execute(pdd)
+#     db.commit()
+#     lista = conn.fetchall()
+#     print(lista)
 
 
-def atualizarpedido( ):
+# def atualizarpedido( ):
     
-    up ="UPDATE  pedidos  SET  , _gerente ='"+gerente+"' where _requisicao= '"+req+"' "
-    db = main.conn #caminho
+#     up ="UPDATE  pedidos  SET  , _gerente ='"+gerente+"' where _requisicao= '"+req+"' "
+#     db = main.conn #caminho
     
-    c = db.cursor()
-    c.execute(up)
-    db.commit()
-    janela.withdraw()
-    Operario.Main()
+#     c = db.cursor()
+#     c.execute(up)
+#     db.commit()
+#     janela.withdraw()
+#     Operario.Main()
