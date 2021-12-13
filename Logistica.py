@@ -24,7 +24,7 @@ def menu_logistica():
     lb.place(x=20,y=15)
     lb.configure(bg=colorbg, border=0)
 
-    bt = Button(root, text="Verificar/Modificar solicitações", command=Lista, border=0, cursor="hand2", activebackground=colorbg)
+    bt = Button(root, text="Recebimento/Retirada", command=Lista, border=0, cursor="hand2", activebackground=colorbg)
     bt.place(x= 20, y=40)
 
 
@@ -59,7 +59,7 @@ def Lista():
     janela1 = Tk()
     janela1.geometry("450x350")
     janela1.configure(bg=colorbg, border=0)
-    janela1.title("Gerente")
+    janela1.title("Logistica")
 
     #query the database
     c.execute("SELECT *,oid FROM pedidos")
@@ -72,10 +72,10 @@ def Lista():
     frames2.grid(row=1,column=0)
 
     
-    bt_alterar=Button(frames1,text='pedido entregue',command=entregue)
+    bt_alterar=Button(frames1,text='Pedido entregue',command=entregue)
     bt_alterar.place(x=220, y=10)
 
-    bt_alterar=Button(frames1,text='pedido retirado',command=retirado)
+    bt_alterar=Button(frames1,text='Pedido retirado',command=retirado)
     bt_alterar.place(x=120, y=10)
 
     
@@ -98,11 +98,11 @@ def Lista():
     my_tree.heading("#0", text="Label", anchor=W)
     my_tree.heading("req", text="nº req", anchor=W)
     my_tree.heading("nome", text="Produto", anchor=CENTER)
-    my_tree.heading("qtd", text="qtd", anchor=W)
-    my_tree.heading("ger", text="gerente", anchor=W)
-    my_tree.heading("com", text="compras", anchor=W)
-    my_tree.heading("log", text="logistica", anchor=W)
-    my_tree.heading("ent", text="retirado", anchor=W)
+    my_tree.heading("qtd", text="Qtd", anchor=W)
+    my_tree.heading("ger", text="Gerente", anchor=W)
+    my_tree.heading("com", text="Compras", anchor=W)
+    my_tree.heading("log", text="Logistica", anchor=W)
+    my_tree.heading("ent", text="Retirado", anchor=W)
 
 
     count = 0
